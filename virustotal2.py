@@ -2,7 +2,13 @@
 import base64
 
 import threading
-from itertools import izip_longest
+
+import sys
+if sys.version_info.major == 3:
+    from itertools import zip_longest
+else:
+    from itertools import izip_longest as zip_longest
+
 import os
 import urlparse
 import re
@@ -307,7 +313,7 @@ class VirusTotal2(object):
         Keyword arguments:
             n - the size of the groups to return
         """
-        return izip_longest(*[iter(iterable)] * n, fillvalue=None)
+        return zip_longest(*[iter(iterable)] * n, fillvalue=None)
 
     # noinspection PyTypeChecker
     def _whatisthing(self, thing):
