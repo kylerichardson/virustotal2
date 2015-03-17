@@ -2,15 +2,9 @@
 import base64
 
 import threading
-
-import sys
-if sys.version_info.major == 3:
-    from itertools import zip_longest
-else:
-    from itertools import izip_longest as zip_longest
-
+from itertools import zip_longest
 import os
-import urlparse
+import urllib.parse
 import re
 import json
 import time
@@ -260,7 +254,7 @@ class VirusTotal2(object):
         """
         report = []
 
-        if isinstance(result, basestring):
+        if isinstance(result, str):
             try:
                 obj = json.loads(result)
                 if isinstance(obj, dict):
@@ -333,7 +327,7 @@ class VirusTotal2(object):
         #we use basestring as the type to maintain unicode compliance in a python 2.x world
         #https://stackoverflow.com/questions/1979004/what-is-the-difference-between-isinstanceaaa-basestring-and-isinstanceaaa
 
-        if isinstance(thing,basestring) and os.path.isfile(thing):
+        if isinstance(thing,str) and os.path.isfile(thing):
             #thing==filename
             # TODO: Add check for
             if thing.endswith(".base64"):
@@ -342,7 +336,7 @@ class VirusTotal2(object):
               return "file_name"
 
         #implied failure case, thing is neither a list or a file, so we assume string
-        if not isinstance(thing, basestring):
+        if not isinstance(thing, str):
             return "unknown"
 
         # Test if thing parameter is a hash (32, 40, or 64 characters long)
@@ -363,7 +357,7 @@ class VirusTotal2(object):
             return "scanid"
 
         # Test if thing parameter is a URL
-        elif urlparse.urlparse(thing).scheme:
+        elif urllib.parse.urlparse(thing).scheme:
             return "url"
         # If nothing is identified, return "Unknown"
         else:
@@ -394,16 +388,16 @@ class VirusTotal2Report(object):
 
     def __iter__(self):
         if self.type == "ip":
-            for resolution in self.resolutions.iteritems():
+            for resolution in self.resolutions.items():
                 yield resolution
         elif self.type == "domain":
-            for resolution in self.resolutions.iteritems():
+            for resolution in self.resolutions.items():
                 yield resolution
         elif self.type == "url":
-            for scanner, report in self.scans.iteritems():
+            for scanner, report in self.scans.items():
                 yield (scanner, report["result"])
         else:
-            for antivirus, report in self.scans.iteritems():
+            for antivirus, report in self.scans.items():
                 yield (
                     (antivirus, report["version"], report["update"]),
                     report["result"],

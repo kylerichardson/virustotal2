@@ -6,3 +6,5 @@ __version__ = "1.1"
 __maintainer__ = "Philip Martin"
 __email__ = "phillip.martin@gmail.com"
 __status__ = "Production"
+
+from .virustotal2 import VirusTotal2
