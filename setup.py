@@ -55,4 +55,5 @@ setup(
     version      = "1.1",
     author       = "Philip Martin",
     author_email = "phillip.martin@gmail.com",
+    use_2to3     = True,
 )
